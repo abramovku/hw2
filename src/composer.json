@@ -1,0 +1,13 @@
+{
+    "name": "app/kirill",
+    "require": {
+        "php": ">=8.2",
+        "monolog/monolog": "3.*"
+    },
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}

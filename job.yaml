@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: crudapp-job
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      name: crudapp-job
+    spec:    
+      restartPolicy: Never
+      containers:
+      - name: after-install-job
+        image: postgres:15.4
+        env:
+          - name: POSTGRES_PASSWORD
+            value: "passwd" 
+        command:
+          - sh
+          - "-c"
+          - |
+            psql postgres://myuser:passwd@postgres:5432/myapp<<'EOF'
+              CREATE TABLE IF NOT EXISTS users (
+                id bigserial NOT NULL PRIMARY KEY,
+                username varchar(48) NOT NULL,
+                firstname varchar(48) NOT NULL,
+                lastname varchar(48) NOT NULL,
+                email text NOT NULL,
+                phone text NOT NULL
+            );
+              insert into users (username, firstname, lastname, email, phone) values ('abramovku','kirill','abramov','abramovku@gmail.com','+7978388211');
+            EOF
