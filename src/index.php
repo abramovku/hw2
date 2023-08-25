@@ -3,11 +3,6 @@ require __DIR__ . '/vendor/autoload.php';
 
 use App\Lib\App;
 use App\Lib\Router;
-use App\Lib\Request;
-use App\Lib\Response;
-use App\Lib\Db;
-
-use App\Controllers;
 
 Router::get('/', function () {
     $greetings = getenv('GRITINGS');

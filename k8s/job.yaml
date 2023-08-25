@@ -11,7 +11,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: after-install-job
-        image: postgres:15.4
+        image: postgres:15-alpine
         env:
           - name: POSTGRES_PASSWORD
             value: "passwd" 

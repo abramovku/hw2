@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: crudapp-container
-          image: abramovku/crudapp:1.3
+          image: abramovku/crudapp:1.4
           ports:
             - name: web
               containerPort: 80
