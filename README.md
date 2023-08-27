@@ -8,3 +8,8 @@ kubectl apply -f app-config.yaml -f secrets.yaml -f deployment.yaml -f postgres.
 ```bash
 kubectl apply -f job.yaml
 ```
+
+Ингресс
+```bash
+kubectl apply -f ingress.yaml
+```
