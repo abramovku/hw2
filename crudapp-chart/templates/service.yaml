@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "crudapp-chart.fullname" . }}
+  labels:
+    {{- include "crudapp-chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port_name }}
+      protocol: TCP
+  selector:
+    {{- include "crudapp-chart.selectorLabels" . | nindent 4 }}

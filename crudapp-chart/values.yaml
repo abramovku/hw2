@@ -1,0 +1,23 @@
+replicaCount: 2
+
+image:
+  repository: abramovku/crudapp
+  version: 1.4
+
+service:
+  type: NodePort
+  port: 80
+  port_name: web
+
+ingress:
+  host: arch.homework
+
+postgresql:
+  enabled: true
+  auth:
+    username: kirilluser
+    password: passwd
+    database: kirillapp
+  service:
+    ports:
+      postgresql: "5432"
