@@ -1,8 +1,9 @@
 {
     "name": "app/kirill",
     "require": {
-        "php": ">=8.2",
-        "monolog/monolog": "3.*"
+        "php": "8.*",
+        "monolog/monolog": "3.*",
+        "promphp/prometheus_client_php": "^2.7"
     },
     "type": "project",
     "autoload": {

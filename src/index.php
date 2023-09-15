@@ -23,4 +23,6 @@ Router::put('/user/([0-9]*)', array(new \App\Controllers\UserController(), 'upda
 
 Router::post('/user', array(new \App\Controllers\UserController(), 'create'));
 
+Router::get('/metrics', array(new \App\Controllers\MainController(), 'metrics'));
+
 App::run();

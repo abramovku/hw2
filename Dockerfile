@@ -25,6 +25,9 @@ RUN apt-get install -y libpq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
+# Install Apcu
+RUN pecl install apcu && docker-php-ext-enable apcu
+
 EXPOSE 80
 
 CMD ["php", "-S", "0.0.0.0:80", "-t", "/usr/src/myapp", "/usr/src/myapp/index.php"]

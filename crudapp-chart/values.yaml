@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: abramovku/crudapp
-  version: 1.4
+  version: 2.1
 
 service:
   type: NodePort
@@ -21,3 +21,7 @@ postgresql:
   service:
     ports:
       postgresql: "5432"
+
+metrics:
+  serviceMonitor:
+    enabled: true

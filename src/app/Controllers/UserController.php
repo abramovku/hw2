@@ -7,63 +7,139 @@ use App\Lib\Response;
 use App\Lib\Db;
 use App\Lib\Logger;
 
-class UserController
+class UserController extends Controller
 {
     public function index(Request $req, Response $res)
     {
-        $userId = $req->params[0];
-        $PDO = Db::getInstance();
-        $data = $PDO->fetchQuery("SELECT * FROM users WHERE id = $userId");
+        try{
+            $userId = $req->params[0];
 
-        $res->toJSON([
-            "result" => $data
-        ]);
+            if ($this->findById($userId) === false) {
+                $res->status('404')
+                    ->startTime($this->startTime)
+                    ->request($req)
+                    ->toJSON([
+                    'message' => 'User not found'
+                ]);
+                return;
+            }
+
+            $PDO = Db::getInstance();
+            $data = $PDO->fetchQuery("SELECT * FROM users WHERE id = $userId");
+
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->toJSON([
+                "result" => $data
+            ]);
+        } catch (\Throwable $e) {
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->status('500')
+                ->toJSON([
+                "message" => $e->getMessage()
+            ]);
+        }
     }
 
     public function create(Request $req, Response $res)
     {
-        $postData = $req->getJSON();
-        $username = $postData['username'] ?? '';
-        $firstName = $postData['firstname'] ?? '';
-        $lastName = $postData['lastname'] ?? '';
-        $email = $postData['email'] ?? '';
-        $phone = $postData['phone'] ?? '';
-        $PDO = Db::getInstance();
-        $data = $PDO->query("insert into users (username, firstname, lastname, email, phone) values ('$username', '$firstName', '$lastName', '$email', '$phone');");
+        try{
+            $postData = $req->getJSON();
+            $username = $postData['username'] ?? '';
+            $firstName = $postData['firstname'] ?? '';
+            $lastName = $postData['lastname'] ?? '';
+            $email = $postData['email'] ?? '';
+            $phone = $postData['phone'] ?? '';
+            $PDO = Db::getInstance();
+            $data = $PDO->query("insert into users (username, firstname, lastname, email, phone) values ('$username', '$firstName', '$lastName', '$email', '$phone');");
 
-        $res->toJSON([
-            "result" => $data
-        ]);
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->toJSON([
+                "result" => $data
+            ]);
+        } catch (\Throwable $e) {
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->status('500')
+                ->toJSON([
+                "message" => $e->getMessage()
+            ]);
+        }
     }
 
     public function delete(Request $req, Response $res)
     {
-        $userId = $req->params[0];
-        $PDO = Db::getInstance();
-        $data = $PDO->query("Delete from users where id = $userId;");
+        try{
+            $userId = $req->params[0];
 
-        $res->toJSON([
-            "result" => $data
-        ]);
+            if ($this->findById($userId) === false) {
+                $res->startTime($this->startTime)
+                    ->request($req)
+                    ->status('404')->
+                    toJSON([
+                    'message' => 'User not found'
+                ]);
+                return;
+            }
+
+            $PDO = Db::getInstance();
+            $data = $PDO->query("Delete from users where id = $userId;");
+
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->toJSON([
+                "result" => $data
+            ]);
+        } catch (\Throwable $e) {
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->status('500')
+                ->toJSON([
+                "message" => $e->getMessage()
+            ]);
+        }
     }
 
     public function update(Request $req, Response $res)
     {
-        $userId = $req->params[0];
+        try {
+            $userId = $req->params[0];
 
-        $postData = $req->getJSON();
-        $username = $postData['username'] ?? '';
-        $firstName = $postData['firstname'] ?? '';
-        $lastName = $postData['lastname'] ?? '';
-        $email = $postData['email'] ?? '';
-        $phone = $postData['phone'] ?? '';
+            if ($this->findById($userId) === false) {
+                $res->startTime($this->startTime)
+                    ->request($req)
+                    ->status('404')
+                    ->toJSON([
+                    'message' => 'User not found'
+                ]);
+                return;
+            }
 
-        $PDO = Db::getInstance();
-        $data = $PDO->query("UPDATE users SET username = '$username', firstname = '$firstName', lastname = '$lastName', email = '$email', phone = '$phone' WHERE id = $userId;");
-       
-        $res->toJSON([
-            "result" => $data
-        ]);
+            $postData = $req->getJSON();
+            $username = $postData['username'] ?? '';
+            $firstName = $postData['firstname'] ?? '';
+            $lastName = $postData['lastname'] ?? '';
+            $email = $postData['email'] ?? '';
+            $phone = $postData['phone'] ?? '';
+
+            $PDO = Db::getInstance();
+            $data = $PDO->query("UPDATE users SET username = '$username', firstname = '$firstName', lastname = '$lastName', email = '$email', phone = '$phone' WHERE id = $userId;");
+
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->toJSON([
+                "result" => $data
+            ]);
+        } catch (\Throwable $e) {
+            $res->startTime($this->startTime)
+                ->request($req)
+                ->status('500')
+                ->toJSON([
+                "message" => $e->getMessage()
+            ]);
+        }
     }
 
     public function migrate(Request $req, Response $res)
@@ -78,8 +154,26 @@ class UserController
             phone text NOT NULL
         );");
 
-        $res->toJSON([
+        $res->startTime($this->startTime)
+            ->request($req)
+            ->toJSON([
             "result" => "success"
         ]);
+    }
+
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    private function findById($id): bool
+    {
+        $PDO = Db::getInstance();
+        $data = $PDO->fetchQuery("SELECT 1 FROM users WHERE id = $id");
+        if (!empty($data)) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -5,12 +5,14 @@ class Request
 {
     public $params;
     public $reqMethod;
+    public $requestUri;
     public $contentType;
 
     public function __construct($params = [])
     {
         $this->params = $params;
         $this->reqMethod = trim($_SERVER['REQUEST_METHOD']);
+        $this->requestUri =trim($_SERVER['REQUEST_URI']);
         $this->contentType = !empty($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
     }
 
@@ -26,6 +28,16 @@ class Request
         }
 
         return $body;
+    }
+
+    public function getMethod()
+    {
+        return $this->reqMethod;
+    }
+
+    public function getRequestUri()
+    {
+        return $this->requestUri;
     }
 
     public function getJSON()
