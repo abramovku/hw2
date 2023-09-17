@@ -9,7 +9,7 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 
 helm repo add stable https://charts.helm.sh/stable
 
-helm repo add ingress-nginx https://kubernetes.github.io/ingr
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
 
 helm repo update
 
