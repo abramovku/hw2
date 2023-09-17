@@ -4,6 +4,10 @@ image:
   repository: abramovku/crudapp
   version: 2.1
 
+app:
+  port: 80
+  port_name: http
+
 service:
   type: NodePort
   port: 80

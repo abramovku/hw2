@@ -20,8 +20,8 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           ports:
-            - name: {{ .Values.service.port_name }}
-              containerPort: {{ .Values.service.port }}
+            - name: {{ .Values.app.port_name }}
+              containerPort: {{ .Values.app.port }}
               protocol: TCP
           env:
             - name: GREETINGS
@@ -61,7 +61,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.port_name }}
+      targetPort: {{ .Values.app.port_name }}
       protocol: TCP
+      name: {{ .Values.service.port_name }}
   selector:
     {{- include "crudapp-chart.selectorLabels" . | nindent 4 }}
