@@ -1,0 +1,20 @@
+{{- if .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "crudapp-chart.fullname" . }}
+  labels:
+    {{- include "crudapp-chart.labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ include "crudapp-chart.fullname" . }}
+  namespaceSelector:
+    matchNames:
+      - "{{ $.Release.Namespace }}"
+  selector:
+    matchLabels:
+      {{- include "crudapp-chart.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - interval: 15s
+      port: {{ .Values.service.port_name }}
+      path: /metrics
+{{- end }}
