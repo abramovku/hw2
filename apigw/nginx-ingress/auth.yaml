@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: user-app-ingress # Перезаписываем уже существующий ingress
   annotations:
-    nginx.ingress.kubernetes.io/auth-url: http://auth-service.default.svc.cluster.local:8080/auth
+    nginx.ingress.kubernetes.io/auth-url: http://auth-service.default.svc.cluster.local:80/auth
     nginx.ingress.kubernetes.io/auth-response-headers: x-auth-token
 spec:
   rules:
