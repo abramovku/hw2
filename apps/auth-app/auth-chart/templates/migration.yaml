@@ -1,12 +1,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "crudapp-chart.fullname" . }}-job
+  name: {{ include "auth-chart.fullname" . }}-job
 spec:
   backoffLimit: 2
   template:
     metadata:
-      name: {{ include "crudapp-chart.fullname" . }}-job
+      name: {{ include "auth-chart.fullname" . }}-job
     spec:
       restartPolicy: Never
       initContainers:
@@ -34,15 +34,13 @@ spec:
             - "-c"
             - |
               psql postgres://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ include "postgresql.fullname" . }}:{{ .Values.postgresql.service.ports.postgresql }}/{{ .Values.postgresql.auth.database }}<<'EOF'
-                DROP TABLE IF EXISTS users;
-                CREATE TABLE IF NOT EXISTS users (
+                DROP TABLE IF EXISTS credentials;
+                CREATE TABLE IF NOT EXISTS credentials (
                   id bigserial NOT NULL PRIMARY KEY,
-                  username varchar(255) NOT NULL,
-                  firstname varchar(255) NOT NULL,
-                  lastname varchar(255) NOT NULL,
-                  email text NOT NULL,
-                  phone text NOT NULL,
-                  UNIQUE(username, email)
-              );
-                insert into users (username, firstname, lastname, email, phone) values ('admin','kirill','abramov','abramovku@gmail.com','+7978388211');
+                  user_id INTEGER NOT NULL,
+                  username VARCHAR (255) NOT NULL,
+                  password VARCHAR (255) NOT NULL,
+                  UNIQUE(username, user_id)
+                );
+                INSERT INTO credentials (user_id, username, password) values (1,'admin','admin');
               EOF

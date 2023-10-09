@@ -1,5 +1,5 @@
 apiVersion: v2
-name: crudapp-chart
+name: auth
 description: A Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
@@ -21,7 +21,7 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: 2.1
+appVersion: "1.2"
 
 dependencies:
   - name: postgresql
@@ -29,4 +29,4 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
     tags:
-      - myapp-database
+      - auth-database

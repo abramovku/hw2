@@ -21,7 +21,7 @@ spec:
       match: PathPrefix(`/`)
       priority: 10 # Добавляем маршрут с большим приоритетом, чтобы эти натсройки применились поверх предыдущих
       services:
-        - name: echoserver
+        - name: user-chart-service
           namespace: default
           port: 80
       middlewares:

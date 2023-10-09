@@ -147,9 +147,9 @@ class UserController extends Controller
         $PDO = Db::getInstance();
         $PDO->query("CREATE TABLE IF NOT EXISTS users (
             id bigserial NOT NULL PRIMARY KEY,
-            username varchar(48) NOT NULL,
-            firstname varchar(48) NOT NULL,
-            lastname varchar(48) NOT NULL,
+            username UNIQUE varchar(255) NOT NULL,
+            firstname varchar(255) NOT NULL,
+            lastname varchar(255) NOT NULL,
             email text NOT NULL,
             phone text NOT NULL
         );");
