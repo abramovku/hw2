@@ -5,7 +5,7 @@ metadata:
   name: auth
 spec:
   forwardAuth:
-    address: http://auth-service.default.svc.cluster.local/auth/traefik
+    address: http://auth-service.default.svc.cluster.local/auth
     authResponseHeaders:
       - x-username
       - x-auth-token
