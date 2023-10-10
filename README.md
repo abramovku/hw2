@@ -25,3 +25,9 @@ Forward routing
 kubectl apply -f apigw/traefik/auth.yaml
 ````
 
+Запускаем traefik 
+````
+minikube service -n traefik traefik
+````
+
+
