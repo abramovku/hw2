@@ -1,33 +1,27 @@
-# hw3
-установка ingress, prometheus и grafana 
+# hw4
+разворачиваем приложения 
 ````
-kubectl create namespace monitoring
+helm install auth  ./apps/auth-app/auth-chart
+helm install myapp  ./apps/user-app/crudapp-chart
+````
 
-kubectl config set-context --current --namespace=monitoring
-
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-helm repo add stable https://charts.helm.sh/stable
-
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
-
+установка traefik
+````
+helm repo add traefik https://helm.traefik.io/traefik
 helm repo update
 
-helm install nginx ingress-nginx/ingress-nginx --namespace monitoring -f ./monitoring/nginx-ingress.yaml
-helm install prom prometheus-community/kube-prometheus-stack -f ./monitoring/prometheus.yaml --atomic
+kubectl create namespace traefik
+
+helm install --version "10.1.2" -n traefik -f apigw/traefik/traefik.yaml traefik traefik/traefik
 ````
 
-устанавливаем приложение в namespace default 
+Устанавливаем маршруты для traefik
 ````
-kubectl config set-context --current --namespace=default
-helm install myapp ./crudapp-chart
-````
-
-импортируем дашборд в графану (CRUDAPP_DASHBOARD)
-````
-kubectl apply -f ./monitoring/grafana.yaml
+kubectl apply -f apigw/traefik/routes.yaml
 ````
 
-![app_metrics.png](img/app_metrics.png)
+Forward routing
+````
+kubectl apply -f apigw/traefik/auth.yaml
+````
 
-![app_metrics.png](img/ingress_metrics.png)
