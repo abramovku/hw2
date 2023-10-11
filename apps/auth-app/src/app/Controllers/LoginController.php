@@ -15,6 +15,10 @@ class LoginController extends Controller
 
     public function logout(Request $req, Response $res)
     {
+        if (!isset($_SESSION))
+        {
+            session_start();
+        }
         session_destroy();
         $res->toJSON(['message' => 'logout successfully']);
     }
@@ -27,13 +31,13 @@ class LoginController extends Controller
 
         if (empty($username) || empty($password)) {
             $_POST['errormessage'] = 'empty login or password field';
-            $res->redirect('/login');
+            $res->redirect($this->getRedirectUrl($req));
         }
 
         //check user and pass exist
         if (!$this->checkCreds($username, $password)) {
             $_POST['errormessage'] = 'not valid credentials';
-            $res->redirect('/login');
+            $res->redirect($this->getRedirectUrl($req));
         }
 
         $token = (new JWT())->issue($username);
@@ -51,8 +55,9 @@ class LoginController extends Controller
     public function auth(Request $req, Response $res)
     {
         session_start();
+
         if (empty($_SESSION['x-username']) || empty($_SESSION['x-auth-token'])) {
-            $res->redirect('/login');
+            $res->redirect($this->getRedirectUrl($req));
         }
 
         $validator = (new JWT())->parse($_SESSION['x-auth-token']);
@@ -62,7 +67,12 @@ class LoginController extends Controller
         }
     }
 
-
+    private function getRedirectUrl(Request $req)
+    {
+        $host = !empty($req->getHeaderVal('X-Forwarded-Host')) ? $req->getHeaderVal('X-Forwarded-Host') :
+            (!empty($req->getHeaderVal('x-forwarded-host')) ? $req->getHeaderVal('x-forwarded-host') : '');
+        return 'http://' . $host . '/auth/login';
+    }
 
 
     private function checkCreds(string $username, string $password): bool

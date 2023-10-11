@@ -16,6 +16,19 @@ class Request
         $this->contentType = !empty($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
     }
 
+    public function getHeaders()
+    {
+        $headers = apache_request_headers();
+        return $headers;
+    }
+
+    public function getHeaderVal(string $key)
+    {
+        $headers =  $this->getHeaders();
+
+        return $headers[$key] ?? '';
+    }
+
     public function getBody()
     {
         if ($this->reqMethod !== 'POST' && $this->reqMethod !== 'PUT') {
