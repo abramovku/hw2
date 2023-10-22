@@ -25,9 +25,14 @@ Forward routing
 kubectl apply -f apigw/traefik/auth.yaml
 ````
 
-Запускаем traefik 
+Установка ingress для роутинга на домен arch.homework
+````
+helm install nginx ingress-nginx/ingress-nginx --namespace nginx-ingress -f .apigw/traefik/nginx-ingress.yaml
+kubectl apply -f apigw/traefik/ingress.yaml
+````
+
+запуск по порту 
 ````
 minikube service -n traefik traefik
 ````
-
 
