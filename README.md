@@ -27,8 +27,9 @@ kubectl apply -f apigw/traefik/auth.yaml
 
 Установка ingress для роутинга на домен arch.homework
 ````
-helm install nginx ingress-nginx/ingress-nginx --namespace nginx-ingress -f .apigw/traefik/nginx-ingress.yaml
-kubectl apply -f apigw/traefik/ingress.yaml
+kubectl create namespace nginx-ingress
+helm install nginx ingress-nginx/ingress-nginx --namespace nginx-ingress -f apigw/traefik/nginx-ingress.yaml
+kubectl apply -f apigw/traefik/ingress.yaml --namespace=traefik
 ````
 
 запуск по порту 
