@@ -13,7 +13,7 @@ Router::get('/', function () {
     }    
 });
 
-Router::get('/migration', array(new \App\Controllers\OrderController(), 'migrate'));
+Router::get('/user/migration', array(new \App\Controllers\OrderController(), 'migrate'));
 
 Router::get('/user/([0-9]*)', array(new \App\Controllers\OrderController(), 'index'));
 

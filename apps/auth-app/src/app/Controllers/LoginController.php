@@ -40,10 +40,13 @@ class LoginController extends Controller
             $res->redirect($this->getRedirectUrl($req));
         }
 
+	    $userId = $this->getUserId($username);
+
         $token = (new JWT())->issue($username);
 
         session_start();
         $_SESSION['x-username'] = $username;
+	    $_SESSION['x-userid'] = $userId;
         $_SESSION['x-auth-token'] = $token;
 
         $res->toJSON([
@@ -56,7 +59,8 @@ class LoginController extends Controller
     {
         session_start();
 
-        if (empty($_SESSION['x-username']) || empty($_SESSION['x-auth-token'])) {
+        if (empty($_SESSION['x-username']) || empty($_SESSION['x-auth-token'])
+	        || empty($_SESSION['x-userid'])) {
             $res->redirect($this->getRedirectUrl($req));
         }
 
@@ -64,6 +68,7 @@ class LoginController extends Controller
         if (!empty($validator['type']) && $validator['type'] === 'success') {
             header("x-auth-token: " . $_SESSION['x-auth-token']);
             header("x-username: " . $_SESSION['x-username']);
+	        header("x-userid: " . $_SESSION['x-userid']);
         }
     }
 
@@ -85,4 +90,11 @@ class LoginController extends Controller
 
         return false;
     }
+
+	private function getUserId(string $username): int
+	{
+		$PDO = Db::getInstance();
+		$data = $PDO->fetchQuery("SELECT user_id FROM credentials WHERE username = '$username'");
+		return $data['user_id'] ?? 0;
+	}
 }

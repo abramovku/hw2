@@ -7,7 +7,15 @@ spec:
   stripPrefix:
     prefixes:
       - /auth
-
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-order-prefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /order
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -25,16 +33,19 @@ spec:
         - name: strip-auth-prefix # Убираем префикс из пути, чтобы запросы шли на корень сервиса
           namespace: default
     - kind: Rule
-      match: PathPrefix(`/user`) # Остальные запросы отправляем в echoserver
-      priority: 1 # Traefik сам сортирует роуты по длине и приоритету, так что нм не обязательно сортировать их, как в Istio
+      match: PathPrefix(`/`)
+      priority: 1
       services:
         - name: user-chart-service
           namespace: default
           port: 80
     - kind: Rule
-      match: PathPrefix(`/order`) # Остальные запросы отправляем в echoserver
-      priority: 1 # Traefik сам сортирует роуты по длине и приоритету, так что нм не обязательно сортировать их, как в Istio
+      match: PathPrefix(`/order`)
+      priority: 2
       services:
         - name: order-chart-service
           namespace: default
           port: 80
+      middlewares:
+        - name: strip-order-prefix # Убираем префикс из пути, чтобы запросы шли на корень сервиса
+          namespace: default

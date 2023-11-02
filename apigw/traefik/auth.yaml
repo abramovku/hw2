@@ -9,6 +9,7 @@ spec:
     authResponseHeaders:
       - x-username
       - x-auth-token
+      - x-userid
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -18,7 +19,7 @@ metadata:
 spec:
   routes:
     - kind: Rule
-      match: PathPrefix(`/user`)
+      match: PathPrefix(`/`)
       priority: 10 # Добавляем маршрут с большим приоритетом, чтобы эти натсройки применились поверх предыдущих
       services:
         - name: user-chart-service
@@ -29,11 +30,11 @@ spec:
           namespace: default
     - kind: Rule
       match: PathPrefix(`/order`)
-      priority: 10 # Добавляем маршрут с большим приоритетом, чтобы эти натсройки применились поверх предыдущих
+      priority: 11
       services:
         - name: order-chart-service
           namespace: default
           port: 80
       middlewares:
-        - name: auth # Включаем forward-auth
+        - name: strip-order-prefix, auth
           namespace: default
