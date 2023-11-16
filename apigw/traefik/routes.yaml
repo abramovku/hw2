@@ -16,12 +16,6 @@ metadata:
 spec:
   routes:
     - kind: Rule
-      match: PathPrefix(`/`)
-      services:
-        - name: auth-service
-          namespace: default
-          port: 80
-    - kind: Rule
       match: PathPrefix(`/order`)
       priority: 2
       services:
@@ -31,3 +25,10 @@ spec:
       middlewares:
         - name: strip-order-prefix # Убираем префикс из пути, чтобы запросы шли на корень сервиса
           namespace: default
+    - kind: Rule
+      priority: 1
+      match: PathPrefix(`/`)
+      services:
+        - name: auth-service
+          namespace: default
+          port: 80

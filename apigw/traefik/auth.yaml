@@ -7,21 +7,9 @@ spec:
   forwardAuth:
     address: http://auth-service.default.svc.cluster.local/auth
     authResponseHeaders:
-      - x-username
-      - x-auth-token
-      - x-userid
-
----
-
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: strip-order-prefix
-spec:
-  stripPrefix:
-    prefixes:
-      - /order
-
+      - X-Username
+      - X-Auth-Token
+      - X-Userid
 ---
 
 apiVersion: traefik.containo.us/v1alpha1
@@ -38,5 +26,6 @@ spec:
           namespace: default
           port: 80
       middlewares:
-        - name: auth, strip-order-prefix
+        - name: auth
+        - name: strip-order-prefix
           namespace: default

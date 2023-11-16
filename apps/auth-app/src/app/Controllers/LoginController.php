@@ -67,9 +67,13 @@ class LoginController extends Controller
 
         $validator = (new JWT())->parse($_SESSION['x-auth-token']);
         if (!empty($validator['type']) && $validator['type'] === 'success') {
-            header("x-auth-token: " . $_SESSION['x-auth-token']);
-            header("x-username: " . $_SESSION['x-username']);
-	        header("x-userid: " . $_SESSION['x-userid']);
+	        $headers =[
+		        "X-Auth-Token" => $_SESSION['x-auth-token'],
+		        "X-Username" => $_SESSION['x-username'],
+		        "X-Userid" => $_SESSION['x-userid']
+	        ];
+
+			$res->setHeader($headers);
         }
     }
 
@@ -88,6 +92,6 @@ class LoginController extends Controller
 	{
 		$PDO = Db::getInstance();
 		$data = $PDO->fetchQuery("SELECT id FROM credentials WHERE username = '$username'");
-		return $data['user_id'] ?? 0;
+		return $data['id'] ?? 0;
 	}
 }

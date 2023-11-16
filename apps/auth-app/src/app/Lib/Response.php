@@ -40,6 +40,14 @@ class Response
         echo json_encode($data);
     }
 
+	public function setHeader(array $headers)
+	{
+		http_response_code($this->status);
+		foreach ($headers as $header=>$value){
+			header($header .': ' . $value);
+		}
+	}
+
     public function raw(string $data)
     {
         http_response_code($this->status);
