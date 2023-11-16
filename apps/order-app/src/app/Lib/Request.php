@@ -56,4 +56,17 @@ class Request
 
         return $decoded;
     }
+
+	public function getHeaders()
+	{
+		$headers = apache_request_headers();
+		return $headers;
+	}
+
+	public function getHeaderVal(string $key)
+	{
+		$headers =  $this->getHeaders();
+
+		return $headers[$key] ?? '';
+	}
 }

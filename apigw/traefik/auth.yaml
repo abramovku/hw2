@@ -12,6 +12,18 @@ spec:
       - x-userid
 
 ---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-order-prefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /order
+
+---
+
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -26,5 +38,5 @@ spec:
           namespace: default
           port: 80
       middlewares:
-        - name: auth
+        - name: auth, strip-order-prefix
           namespace: default
