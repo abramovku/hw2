@@ -20,7 +20,7 @@ spec:
   routes:
     - kind: Rule
       match: PathPrefix(`/order`)
-      priority: 2
+      priority: 3
       services:
         - name: order-chart-service
           namespace: default
