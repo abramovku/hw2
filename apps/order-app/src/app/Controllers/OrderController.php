@@ -11,15 +11,14 @@ class OrderController extends Controller
 {
 	public function index(Request $req, Response $res)
 	{
-		$res->view('order/form.php');//render form
+		$userId = $req->getHeaderVal('x-userid');
+		$login = $req->getHeaderVal('x-username');
+
+		$res->view('order/form.php', compact('userId','login'));//render form
 	}
 
 	public function data(Request $req, Response $res)
 	{
-		$postData = $req->getJSON();
-		$username = $postData['username'] ?? '';
-		$password = $postData['password'] ?? '';
-
-
+		//
 	}
 }

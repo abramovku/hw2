@@ -62,6 +62,12 @@ class Response
         echo $data;
     }
 
+	public function view(string $path, array $vars = [])
+	{
+		http_response_code($this->status);
+		(new View())->render($path, $vars);
+	}
+
     private function metricStore()
     {
         $endTime = time() - $this->startTime;

@@ -10,7 +10,8 @@ class LoginController extends Controller
 {
     public function index(Request $req, Response $res)
     {
-        $res->view('auth/form.php');//render form
+	    $register_url = $this->getRedirectUrl($req,'/register');
+        $res->view('auth/form.php', compact('register_url'));//render form
     }
 
     public function logout(Request $req, Response $res)
@@ -30,14 +31,14 @@ class LoginController extends Controller
         $password = $postData['password'] ?? '';
 
         if (empty($username) || empty($password)) {
-            $_POST['errormessage'] = 'empty login or password field';
-            $res->redirect($this->getRedirectUrl($req));
+	        $errormessage = 'empty login or password field';
+            $res->redirect($this->getRedirectUrl($req, '/login'));
         }
 
         //check user and pass exist
         if (!$this->checkCreds($username, $password)) {
-            $_POST['errormessage'] = 'not valid credentials';
-            $res->redirect($this->getRedirectUrl($req));
+	        $errormessage = 'not valid credentials';
+            $res->redirect($this->getRedirectUrl($req, '/login'));
         }
 
 	    $userId = $this->getUserId($username);
@@ -61,7 +62,7 @@ class LoginController extends Controller
 
         if (empty($_SESSION['x-username']) || empty($_SESSION['x-auth-token'])
 	        || empty($_SESSION['x-userid'])) {
-            $res->redirect($this->getRedirectUrl($req));
+            $res->redirect($this->getRedirectUrl($req, '/login'));
         }
 
         $validator = (new JWT())->parse($_SESSION['x-auth-token']);
@@ -71,14 +72,6 @@ class LoginController extends Controller
 	        header("x-userid: " . $_SESSION['x-userid']);
         }
     }
-
-    private function getRedirectUrl(Request $req)
-    {
-        $host = !empty($req->getHeaderVal('X-Forwarded-Host')) ? $req->getHeaderVal('X-Forwarded-Host') :
-            (!empty($req->getHeaderVal('x-forwarded-host')) ? $req->getHeaderVal('x-forwarded-host') : '');
-        return 'http://' . $host . '/auth/login';
-    }
-
 
     private function checkCreds(string $username, string $password): bool
     {
@@ -94,7 +87,7 @@ class LoginController extends Controller
 	private function getUserId(string $username): int
 	{
 		$PDO = Db::getInstance();
-		$data = $PDO->fetchQuery("SELECT user_id FROM credentials WHERE username = '$username'");
+		$data = $PDO->fetchQuery("SELECT id FROM credentials WHERE username = '$username'");
 		return $data['user_id'] ?? 0;
 	}
 }

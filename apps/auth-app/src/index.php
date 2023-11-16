@@ -10,7 +10,11 @@ Router::get('/', function () {
 
 Router::get('/login', array(new \App\Controllers\LoginController(),'index'));
 
+Router::get('/register', array(new \App\Controllers\RegisterController(),'index'));
+
 Router::post('/login', array(new \App\Controllers\LoginController(),'data'));
+
+Router::post('/register', array(new \App\Controllers\RegisterController(),'index'));
 
 Router::get('/logout', array(new \App\Controllers\LoginController(),'logout'));
 

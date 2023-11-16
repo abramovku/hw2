@@ -12,6 +12,18 @@
               <div class="column"><input id="username" name="username" type="text"/></div>
           </div>
           <div class="row">
+              <div class="column"><label for="email">Email</label></div>
+              <div class="column"><input id="email" name="email" type="text"/></div>
+          </div>
+          <div class="row">
+              <div class="column"><label for="fname">First name</label></div>
+              <div class="column"><input id="fname" name="fname" type="text"/></div>
+          </div>
+          <div class="row">
+              <div class="column"><label for="lname">Last name</label></div>
+              <div class="column"><input id="lname" name="lname" type="password"/></div>
+          </div>
+          <div class="row">
               <div class="column"><label for="password">Password</label></div>
               <div class="column"><input id="password" name="password" type="password"/></div>
           </div>
@@ -20,6 +32,6 @@
           </div>
       </div>
   </form>
-  <a href="<?php echo $register_url;?>">Sign Up</a>
+  <a href="<?php echo $login_url;?>">Log in</a>
   </body>
 </html>

@@ -4,10 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   </head>
   <body>
+
+  <?php echo 'user: ' . $userId;
+		echo 'login: ' . $login;?>
   <form action="" method="POST" enctype="application/x-www-form-urlencoded">
-      <?php if (!empty($_REQUEST['errormessage'])) { ?>
-        <p style="color:red;"><b><?php echo $_REQUEST['errormessage'];?></b></p><br>
-      <?php } ?>
+
       <input name="url" type="hidden" value=""/>
       <div class="box">
           <div class="row">

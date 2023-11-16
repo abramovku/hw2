@@ -46,10 +46,10 @@ class Response
         echo $data;
     }
 
-    public function view(string $path)
+    public function view(string $path, array $vars = [])
     {
         http_response_code($this->status);
-        (new View())->render($path);
+        (new View())->render($path, $vars);
     }
 
     public function redirect(string $url)

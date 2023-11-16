@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: abramovku/authapp
-  version: 1.0
+  version: 1.7
 
 app:
   port: 80
