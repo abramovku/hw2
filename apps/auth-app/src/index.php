@@ -20,6 +20,6 @@ Router::get('/logout', array(new \App\Controllers\LoginController(),'logout'));
 
 Router::get('/auth', array(new \App\Controllers\LoginController(),'auth'));
 
-Router::get('/user/', array(new \App\Controllers\LoginController(),'user'));
+Router::get('/user/([0-9]*)', array(new \App\Controllers\LoginController(),'user'));
 
 App::run();

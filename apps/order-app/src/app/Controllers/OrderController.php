@@ -11,8 +11,8 @@ class OrderController extends Controller
 {
 	public function index(Request $req, Response $res)
 	{
-		$userId = $req->getHeaderVal('x-userid');
-		$login = $req->getHeaderVal('x-username');
+		$userId = $req->getHeaderVal('X-Userid');
+		$login = $req->getHeaderVal('X-Username');
 
 		$res->view('order/form.php', compact('userId','login'));//render form
 	}

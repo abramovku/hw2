@@ -94,4 +94,41 @@ class LoginController extends Controller
 		$data = $PDO->fetchQuery("SELECT id FROM credentials WHERE username = '$username'");
 		return $data['id'] ?? 0;
 	}
+
+	private function findById(int $id): bool
+	{
+		$PDO = Db::getInstance();
+		$data = $PDO->fetchQuery("SELECT 1 FROM credentials WHERE id = $id");
+		if (!empty($data)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function user(Request $req, Response $res)
+	{
+		try{
+			$userId = $req->params[0];
+
+			if ($this->findById($userId) === false) {
+				$res->toJSON([
+					'message' => 'User not found'
+				]);
+				return;
+			}
+
+			$PDO = Db::getInstance();
+			$data = $PDO->fetchQuery("SELECT * FROM credentials WHERE id = $userId");
+
+			$res->toJSON([
+				"result" => $data
+			]);
+		} catch (\Throwable $e) {
+			$res->status('500')
+				->toJSON([
+					"message" => $e->getMessage()
+				]);
+		}
+	}
 }
