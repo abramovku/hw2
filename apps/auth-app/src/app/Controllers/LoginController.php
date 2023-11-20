@@ -52,6 +52,7 @@ class LoginController extends Controller
 
         $res->toJSON([
             'message' => 'logined successfully',
+			'data' => [$username, $userId, $token],
             'token' => $token
         ]);
     }
@@ -92,7 +93,7 @@ class LoginController extends Controller
 	{
 		$PDO = Db::getInstance();
 		$data = $PDO->fetchQuery("SELECT id FROM credentials WHERE username = '$username'");
-		return $data['id'] ?? 0;
+		return $data[0]['id'] ?? 0;
 	}
 
 	private function findById(int $id): bool

@@ -34,15 +34,13 @@ spec:
             - "-c"
             - |
               psql postgres://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ include "postgresql.fullname" . }}:{{ .Values.postgresql.service.ports.postgresql }}/{{ .Values.postgresql.auth.database }}<<'EOF'
-                DROP TABLE IF EXISTS users;
-                CREATE TABLE IF NOT EXISTS users (
+                DROP TABLE IF EXISTS orders;
+                CREATE TABLE IF NOT EXISTS orders (
                   id bigserial NOT NULL PRIMARY KEY,
-                  username varchar(255) NOT NULL,
-                  firstname varchar(255) NOT NULL,
-                  lastname varchar(255) NOT NULL,
-                  email text NOT NULL,
-                  phone text NOT NULL,
-                  UNIQUE(username, email)
+                  token varchar(255) NOT NULL,
+                  user_id bigserial NOT NULL,
+                  price float NOT NULL,
+                  UNIQUE(token)
               );
                 insert into users (username, firstname, lastname, email, phone) values ('admin','kirill','abramov','abramovku@gmail.com','+7978388211');
               EOF
