@@ -40,22 +40,28 @@ class Request
         return $this->requestUri;
     }
 
-    public function getJSON()
-    {
-        if ($this->reqMethod !== 'POST' && $this->reqMethod !== 'PUT') {
-            return [];
-        }
+	public function getJSON()
+	{
+		if ($this->reqMethod !== 'POST' && $this->reqMethod !== 'PUT') {
+			return [];
+		}
 
-        if (strcasecmp($this->contentType, 'application/json') !== 0) {
-            return [];
-        }
+		if (strcasecmp($this->contentType, 'application/json') !== 0 &&
+			strcasecmp($this->contentType, 'application/x-www-form-urlencoded') !== 0
+		) {
+			return [];
+		}
 
-        // Receive the RAW post data.
-        $content = trim(file_get_contents("php://input"));
-        $decoded = json_decode($content, true);
+		if (strcasecmp($this->contentType, 'application/json') === 0)
+		{
+			// Receive the RAW post data.
+			$content = trim(file_get_contents("php://input"));
+			$decoded = json_decode($content, true);
+			return $decoded;
+		}
 
-        return $decoded;
-    }
+		return $_POST;
+	}
 
 	public function getHeaders()
 	{

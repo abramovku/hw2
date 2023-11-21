@@ -2,7 +2,7 @@
 разворачиваем приложения 
 ````
 helm install auth  ./apps/auth-app/auth-chart
-helm install myapp  ./apps/user-app/crudapp-chart
+helm install myapp  ./apps/order-app/crudapp-chart
 ````
 
 установка traefik

@@ -5,27 +5,21 @@
   </head>
   <body>
 
-  <?php echo 'user: ' . $userId;
-		echo 'login: ' . $login;?>
   <form action="" method="POST" enctype="application/x-www-form-urlencoded">
-
-      <input name="url" type="hidden" value=""/>
+      <input name="order" id="order" type="hidden" value=""/>
+      <input name="user" id="user" type="hidden" value="<?=$userId;?>"/>
       <div class="box">
           <div class="row">
-              <div class="column"><label for="username">Имя пользователя</label></div>
-              <div class="column"><input id="username" name="username" type="text"/></div>
+              <div class="column"><label for="price">Price</label></div>
+              <div class="column"><input id="price" name="price" type="number"/></div>
           </div>
           <div class="row">
-              <div class="column"><label for="password">Пароль</label></div>
-              <div class="column"><input id="password" name="password" type="password"/></div>
-          </div>
-          <div class="row">
-              <div class="column"><button type="submit">Вход</button></div>
+              <div class="column"><button type="submit">Create order</button></div>
           </div>
       </div>
   </form>
   </body>
-  <style>
+  <script>
       let orderId = 'order';
       const generateRandomString = (length) => {
                                                  let result = '';
@@ -38,5 +32,5 @@
       return result;
       };
       document.getElementById(orderId).value= generateRandomString(30);
-  </style>
+  </script>
 </html>

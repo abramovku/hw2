@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: abramovku/crudapp
-  version: "2.6"
+  version: "3.4"
 
 app:
   port: 80

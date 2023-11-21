@@ -75,6 +75,8 @@ class LoginController extends Controller
 	        ];
 
 			$res->setHeader($headers);
+        } else {
+	        $res->redirect($this->getRedirectUrl($req, '/login'));
         }
     }
 

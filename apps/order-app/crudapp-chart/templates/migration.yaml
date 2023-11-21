@@ -42,5 +42,4 @@ spec:
                   price float NOT NULL,
                   UNIQUE(token)
               );
-                insert into users (username, firstname, lastname, email, phone) values ('admin','kirill','abramov','abramovku@gmail.com','+7978388211');
               EOF
