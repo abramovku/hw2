@@ -1,0 +1,227 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ABRAMOVKU/shop/1.0.0
+info:
+  description: e-commerce Api
+  version: "1.0.0"
+  title: Simple e-commerce Api
+  contact:
+    email: abramovku@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: users
+    description: Shop users
+  - name: orders
+    description: Shop orders
+  - name: billings
+    description: Shop accounts
+  - name: notifications
+    description: Shop users notifications
+paths:
+  /login:
+    get:
+      tags:
+        - users
+      summary: login form
+      description: |
+        Render login form
+      responses:
+        '200':
+          description: Login form rendered
+
+    post:
+      tags:
+        - users
+      summary: login user
+      description: Login User
+      responses:
+        '200':
+          description: user logined
+        '303':
+          description: 'redirect to login form'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+  /register:
+    get:
+      tags:
+        - users
+      summary: register form
+      description: |
+        Render registration form
+      responses:
+        '200':
+          description: Registration form rendered
+
+    post:
+      tags:
+        - users
+      summary: register user
+      description: Register User
+      responses:
+        '200':
+          description: user logined
+        '303':
+          description: 'redirect to login form'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+  /user/{userId}:
+    get:
+      tags:
+        - users
+      summary: get user data.
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+          description: Numeric ID of the user to get.
+      responses:
+        '200':
+          description: get user data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+                    format: password
+                  fname:
+                    type: string
+                  lname:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+  /order:
+    get:
+      tags:
+        - orders
+      summary: order form
+      description: |
+        Render order form
+      responses:
+        '200':
+          description: Order form rendered
+
+    post:
+      tags:
+        - orders
+      summary: create order
+      description: Create Order
+      responses:
+        '200':
+          description: order created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+              
+  /billing/account/add:
+    post:
+      tags:
+        - billings
+      summary: top up account
+      description: Top up account
+      responses:
+        '200':
+          description: money added
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+  /billing/account/minus:
+    post:
+      tags:
+        - billings
+      summary: withdraw money
+      description: Withdraw money
+      responses:
+        '200':
+          description: money withdrowed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+  /notifications:
+    get:
+        tags:
+          - notifications
+        summary: get notifications
+        description: Get notifications
+        responses:
+          '200':
+            description: notifications list
+            content:
+              application/json:
+                schema:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/Notification'
+  
+  
+components:
+  schemas:
+    UserLogin:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+        fname:
+          type: string
+        lname:
+          type: string
+        email:
+          type: string
+          format: email
+    Order:
+      type: object
+      properties:
+        user:
+          type: integer
+        order:
+          type: string
+          format: uuid
+        price:
+          type: integer
+    Account:
+      type: object
+      properties:
+        user:
+          type: integer
+        money:
+          type: integer
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        text:
+          type: string
