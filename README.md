@@ -1,39 +1,89 @@
-# hw4
-разворачиваем приложения 
-````
-helm install auth  ./apps/auth-app/auth-chart
-helm install myapp  ./apps/order-app/crudapp-chart
-````
+# hw7
+# Интернет-магазин
 
-установка traefik
-````
-helm repo add traefik https://helm.traefik.io/traefik
-helm repo update
+Приложение позволяет заказывать товары в интернет магазине
 
-kubectl create namespace traefik
+## Сценарии
 
-helm install --version "10.1.2" -n traefik -f apigw/traefik/traefik.yaml traefik traefik/traefik
-````
+- Пользователь может зарегистрироваться в интернет-магазине
+- Пользователь может авторизоваться в интернет-магазине
+- Пользователь может пополнить баланс своего счёта
+- Пользователь может получить баланс своего счёта
+- Пользователь может создать заказ
+- Пользователь получает уведомления о заказах
 
-Устанавливаем маршруты для traefik
-````
-kubectl apply -f apigw/traefik/routes.yaml
-````
+### Сущности
 
-Forward routing
-````
-kubectl apply -f apigw/traefik/auth.yaml
-````
+- Пользователь
+- Заказ
+- Уведомление
+- Счёт
 
-Установка ingress для роутинга на домен arch.homework
-````
-kubectl create namespace nginx-ingress
-helm install nginx ingress-nginx/ingress-nginx --namespace nginx-ingress -f apigw/traefik/nginx-ingress.yaml
-kubectl apply -f apigw/traefik/ingress.yaml --namespace=traefik
-````
+### Системные действия
 
-запуск по порту 
-````
-minikube service -n traefik traefik
-````
+- Регистрация
+- Авторизация
+- Пополнение счёта
+- Получение баланса
+- Создание заказа
+- Получение уведомления
+
+## Сервисы
+
+- Сервис Авторизации
+- Сервис Биллинга
+- Сервис Заказов
+- Сервис с
+
+## Спецификация OpenAPI
+
+[ABRAMOVKU-shop-1.0.0-swagger.yaml](ABRAMOVKU-shop-1.0.0-swagger.yaml)
+## Схема сервисов
+
+![](img/scheme.png)
+
+---
+### Сервис Авторизации
+
+Сервис предоставляет API для работы с пользователями: логин, регистрация, аутентификация и получение информации про пользователя
+
+**Запросы**
+
+- `GET /login` — форма логина
+- `GET /logout` — разлогинить пользователя
+- `POST /login` — логин пользователя
+- `GET /register` — форма регистрации
+- `POST /register` — регистрация пользователя
+- `GET /register` — регистрация пользователя
+- `GET /auth` — аутентификация
+- `GET /user/([0-9]*)` — информация о пользователе
+---
+### Сервис Биллинга
+
+Сервис предоставляет методы для работы со счетом пользователя: создание счета, пополнение и списание
+
+**Запросы**
+
+- `GET /billing/account/my` — отображает состояние счёта (баланса)
+- `POST /billing/account` — создание счёта
+- `POST /billing/account/add` — пополнение баланса счёта пользователя
+- `POST /billing/account/minus` — списание денег со счёта пользователя
+
+### Сервис Заказов
+
+Сервис предоставляет методы для работы с заказами
+
+**Запросы**
+
+- `GET /order` — форма заказа
+- `GET /order/list` — заказы пользователя
+- `POST /order` — создание заказа
+
+### Сервис Уведомлений
+
+Сервис предоставляет методы для работы с уведомлениями
+
+**Запросы**
+
+- `GET /notifications` — отображает все уведомления пользователя
 
